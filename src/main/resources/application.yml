@@ -3,7 +3,8 @@ spring:
     job:
       names: ${job.names:NONE}
     jdbc:
-      initialize-schema: always
+      initialize-schema: never
+      # 운영에서는 never로 한다. sql에 ddl 이 운영에 직접 실행하면 안 된다.
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${db.url:jdbc:mysql://localhost:3306/spring_batch}
