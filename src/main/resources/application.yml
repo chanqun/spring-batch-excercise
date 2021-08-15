@@ -1,0 +1,25 @@
+spring:
+  batch:
+    job:
+      names: ${job.names:NONE}
+    jdbc:
+      initialize-schema: always
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${db.url:jdbc:mysql://localhost:3306/spring_batch}
+    username: ${db.username:root}
+    password: ${db.password:1234}
+    hikari:
+      maximum-pool-size: 2
+      minimum-idle: 1
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.MySQL8Dialect
+#      javax:
+#        persistence:
+#          validation:
+#            mode: none
+#    show-sql: false
