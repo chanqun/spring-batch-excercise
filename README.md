@@ -15,7 +15,7 @@
 10. 테스트 및 운영
 
 
-##### 1. 스프링 배치 탕생 배경
+##### 1. 스프링 배치 탄생 배경
 - 자바 기분 표준 배치 기술 부재
   - 배치 처리에서 요구하는 재사용 가능한 자바 기반 배치 아키텍처 표준의 필요성이 대두
 - 스프링 배치는 SpringSource와 Accenture의 합작품
@@ -52,14 +52,42 @@ Batch Infrastructure
 - Reader, Processor, Writer, Skip, Retry 등이 속한다.
 
 
+#### 스프링 배치 활성화
+- @EnableBatchProcessing
+  - 총 4개의 설정 클래스를 실행시키며 스프링 배치의 모든 초기화 및 실행 구성이 이루어진다
+  - 스프링 부트 배치의 자동 설정 클래스가 실행됨으로 빈으로 등록된 모든 Job을 검색해서 초기화와 동시에 Job을 수행하도록 구성됨
 
+1. BatchAutoConfiguration
+  - Job을 수행하는 JobLauncherApplicationRunner
+2. SimpleBatchConfiguration
+  - JobBuilderFactory 와 StepBuilderFactory 생성
+  - 스프링 배치의 주요 구성 요소 생성 - 프록시 객체로 생성됨
+3. BatchConfigurerConfiguration
+  - BasicBatchConfigurer
+    - SimpleBatchConfiguration 에서 생성한 프록시 객체의 시제 대상 객체를 생성하는 설정 클래스
+    - 빈으로 의존성 주입 받아서 주요 객체들을 참조해서 사용할 수 있다.
+    - JpaBatchConfigurer
 
+```java
+1. @Configuration 선언
+    - 하나의 배치 Job을 정의하고 빈 설정
 
+2. JobBuilderFactory
+    - Job 을 생성하는 빌더 팩토리
+3. StepBuilderFactory
+    - Step을 생성하는 빌더 팩토리
+4. Job
+    - Job 생성
+5. Step
+    - Step 생성
+6. tasklet
+    - step 안에서 단일 태스크로 수행되는 로직 구현
+7. Job 구동 -> Step을 실행 -> Tasklet을 실행
+```
 
+![img1](./image/img1.png)
 
-
-
-
+![img2](./image/img2.png)
 
 
 
