@@ -5,7 +5,6 @@
 //import org.springframework.batch.core.Step
 //import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 //import org.springframework.batch.core.configuration.annotation.StepBuilderFactory
-//import org.springframework.batch.core.launch.support.RunIdIncrementer
 //import org.springframework.batch.repeat.RepeatStatus
 //import org.springframework.context.annotation.Bean
 //import org.springframework.context.annotation.Configuration
@@ -22,8 +21,8 @@
 //    @Bean
 //    fun helloJob(): Job { //spring batch 의 실행 단위
 //        return jobBuilderFactory.get("helloJob")
-//            .incrementer(RunIdIncrementer()) // job이 실행할 때 마다 parameter id를 생성
-//            .start(this.helloStep()) // job 실행시 최초로 실행 될 메소드
+//            .start(helloStep()) // job 실행시 최초로 실행 될 메소드
+//            .next(helloStep2())
 //            .build()
 //    }
 //
@@ -32,6 +31,15 @@
 //        return stepBuilderFactory.get("helloStep")
 //            .tasklet { stepContribution, chunkContext ->
 //                logger.info { "hello spring batch" }
+//                RepeatStatus.FINISHED
+//            }.build()
+//    }
+//
+//    @Bean
+//    fun helloStep2(): Step {
+//        return stepBuilderFactory.get("helloStep2")
+//            .tasklet { stepContribution, chunkContext ->
+//                logger.info { "hello spring batch2" }
 //                RepeatStatus.FINISHED
 //            }.build()
 //    }
