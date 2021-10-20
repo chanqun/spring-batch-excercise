@@ -24,3 +24,10 @@ spring:
           validation:
             mode: none
     show-sql: false
+
+
+
+#
+# spring.profiles.active : local
+# spring.config.activate.on-profile: local
+#

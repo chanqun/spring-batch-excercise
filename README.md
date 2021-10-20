@@ -109,6 +109,27 @@ Batch Infrastructure
 
 
 
+- 배치 실행을 위한 메타 데이터가 저장되는 테이블
+
+Job 관련 테이블
+- BATCH_JOB_INSTANCE
+  - Job이 실행되며 생성되는 최상위 계층의 테이블, job_name과 job_key로 중복 저장될 수 없다.
+- BATCH_JOB_EXECUTION
+  - Job이 실행되는 동안 시작/종료 시간, job등을 관리
+- BATCH_JOB_EXECUTION_PARAMS
+  - Job을 실행하기 위해 주입된 parameter 정보 저장
+- BATCH_JOB_EXECUTION_CONTEXT
+  - Job이 실행되며 공유해야할 데이터를 직렬화해 저장(json)
+
+Step 관련 테이블
+
+- BATCH_STEP_EXECUTION
+  - Step이 실행되는 동안 필요한 데이터 또는 실행된 결과 저장
+- BATCH_STEP_EXECUTION_CONTEXT
+  - Step이 실행되며 공유해야할 데이터를 직렬화해 저장, step 별로 저장되며 step 간 서로 공유할 수 없음
+
+-> batch -> core 밑에 sql 밑에 존재
+
 
 
 
@@ -135,21 +156,6 @@ Batch Infrastructure
     
 ### 스프링 배치 테이블 구조와 이해
 
-- 배치 실행을 위한 메타 데이터가 저장되는 테이블
-- BATCH_JOB_INSTANCE
-    - Job이 실행되며 생성되는 최상위 계층의 테이블
-- BATCH_JOB_EXECUTION
-    - Job이 실행되는 동안 시작/종료 시간, job등을 관리
-- BATCH_JOB_EXECUTION_PARAMS
-    - Job을 실행하기 위해 주입된 parameter 정보 저장
-- BATCH_JOB_EXECUTION_CONTEXT
-    - Job이 실행되며 공유해야할 데이터를 직렬화해 저장
-- BATCH_STEP_EXECUTION
-    - Step이 실행되는 동안 필요한 데이터 또는 실행된 결과 저장
-- BATCH_STEP_EXECUTION_CONTEXT
-    - Step이 실행되며 공유해야할 데이터를 직렬화해 저장
-    
--> batch -> core 밑에 sql 밑에 존재
 
 
 - JobInstance : BATCH_JOB_INSTANCE 와 매핑
