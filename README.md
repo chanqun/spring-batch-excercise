@@ -131,6 +131,19 @@ Step 관련 테이블
 -> batch -> core 밑에 sql 밑에 존재
 
 
+### 스프링 배치 도메인 이해
+1. Job
+2. Step
+3. ExecutionContext
+4. JobRepository / JobLauncher
+
+
+
+
+
+
+
+
 
 
 ### 스프링 배치 기본 구조
