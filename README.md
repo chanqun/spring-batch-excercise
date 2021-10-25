@@ -202,6 +202,20 @@ JobInstance = Job + JobParameters (BATCH_JOB_INSTANCE)에 저장
 > name=user1 seq(long)=2 date(date)=2021/10/25
 
 
+### JobExecution
+1. 기본 개념
+    - JobInstance 에 대한 한 번의 시도를 의미하는 객체로서 Job실행 중에 발생한 정보들을 저장하고 있는 객체
+      - 시작시간, 종료시간, 상태, 종료상태의 속성을 가짐
+    - JobInstance 와의 관계
+      - JobExecution은 FAILED, COMPLETED 등의 Job의 실행 결과 상태를 가지고 있음
+      - COMPLETED이면 재실행 불가
+      - FAILED이면 재실행이 가능
+      - COMPLETED 될 떄까지 하나의 JobInstance 내에서 여러 번의 시도가 생길 수 있음
+2. BATCH_JOB_EXECUTION 테이블과 매핑
+   - JobInstance와 1:M
+
+
+
 
 
 
