@@ -198,7 +198,8 @@ JobInstance = Job + JobParameters (BATCH_JOB_INSTANCE)에 저장
 
 3. BATCH_JOB_EXECUTION_PARAM 테이블과 매핑
     - JOB_EXECUTION 과 1:M 의 관계
-
+    
+> name=user1 seq(long)=2 date(date)=2021/10/25
 
 
 
