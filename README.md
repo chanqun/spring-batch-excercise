@@ -322,6 +322,30 @@ Map<String, Object> map = new ConcurrentHashMap
 ![img5](./image/img5.png)
 
 
+### 배치 초기화 설정
+1. JobLauncherApplicationRunner
+    - Spring Batch 작업을 시작하는 ApplicationRunner로서 BatchConfiguration에서 생성됨
+    - 스프링 부트에서 제공하는 ApplicationRunner의 구현체로 어플리케이션이 정상적으로 구동될때 마다 실행됨
+    - 기본적으로 빈으로 등록된 모든 job을 실행시킨다.
+
+2. BatchProperties
+   - Spring Batch의 환경 설정 클래스
+   - Job이름, 스키마 초기화 설정, 테이블 prefix등의 값을 설정할 ㅅ ㅜ있다.
+   - application.properties or applicaion.yml 파일에 설정함
+```
+batch:
+    job:
+        names: ${job.name:NONE}
+    initialize-schema: NEVER
+    tablePrefix: SYSTEM
+```
+
+3. Job 실행 옵션
+    - 지정한 Batch Job만 실행하도록 할 수 있음
+    - spring.batch.job.names
+    - 어플리케이션 실행시 Program arguments 로 job 이름 입력한다.
+    - --job.name=helloJob, simpleJob
+
 
 
 
