@@ -378,6 +378,33 @@ start(flow), flow(step) - FlowJobBuilder -> JobFlowBuilder[Flow 생성]
 Builder 들은 SimpleJobBuilder에서 bean으로 생성된다.
 
 
+### SimpleJob
+- 개념 및 API 소개
+- API 설정
+- 아키텍처
+
+1. 기본 개념
+- SimpleJob은 Step을 실행시키는 Job 구현체 SimpleJobBuiler에 의해 생성
+- 여러 단계의 Step으로 구성 Step을 순차적으로 실행
+- 모든 Step의 실행이 성공적으로 완료되어야 Job이 성공적으로 완료
+- 맨 마지막에 실행한 Step의 BatchStatus 가 Job의 최종 BatchStatus가 된다.
+
+
+simpleJob에 저장되는 항목 - 
+start : 처음 실행 할 Step 설정, 최초 한 번 설정, 이 메서드를 실행하면 SimpleJobBuilder 반환
+next : 다음에 실행 할 Step 설정, 횟수는 제한이 없으며 모든 next()의 Step이 종료가 되면 Job이 종료
+incrementer : JobParameter의 값을 자동으로 증가해 주는 JobParametersIncremeter 설정
+preventRestart : Job의 재시작 가능 여부 설정,
+validator : JobParameter를 실행하기 전에 올바른 구성이 되었는지 검증하는 JobParametersValidator 설정
+listener : Job 라이프 사이클의 특정 시점에 콜백 제공받고록 JobExecutionListener 설정
+build : SimpleJob 생성
+
+
+
+
+
+
+
 
 
 
