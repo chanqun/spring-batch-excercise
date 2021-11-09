@@ -37,6 +37,7 @@ public class JobConfiguration {
                 .start(flow())
                 .next(step3())
                 .end()
+                //.validator(new DefaultJobParametersValidator(new String[]{"name","date"}, new String[]{"count"}))
                 .validator(new CustomJobParametersValidator())
                 .build();
     }
