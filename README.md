@@ -400,6 +400,18 @@ listener : Job 라이프 사이클의 특정 시점에 콜백 제공받고록 Jo
 build : SimpleJob 생성
 
 
+### validator()
+
+1. 기본개념
+    - Job 실행에 꼭 필요한 파라미터를 검증하는 용도
+    - DefaultJobParametersValidator 구현체를 지원하며, 좀 더 복잡한 제약 조건이 있다면 인터페이스를 직접 구현할 수 있음
+
+2. 구조
+```
+JobPrametersValidator
+void validate(@Nullable JobParameters parameters)
+```
+
 
 
 
