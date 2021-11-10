@@ -435,6 +435,11 @@ JobParameters getNext(@Nullable JobParameters parameters);
 ```
 
 
+### SimpleJob 아키텍
+
+![img6](./image/img6.png)
+![img7](./image/img7.png)
+
 
 
 
