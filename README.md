@@ -412,6 +412,27 @@ JobPrametersValidator
 void validate(@Nullable JobParameters parameters)
 ```
 
+### preventRestart()
+
+1. 기본개념
+   - Job 의 재시작 여부를 설정
+   - 기본 값은 true이며 false 로 설정 시 이 Job은 재시작을 지원하지 않는다. 라는 의미
+   - Job이 실패해도 재시작이 안 되며 Job을 재 시작하려고 하면 JobRestartException 발생
+   - 재 시작과 관련 있는 기능으로 Job을 처음 실행하는 것 과는 아무런 상관 없음
+
+
+### incrementer()
+
+1. 기본개념
+   - JobParameters에서 필요한 값을 증가시켜 다음에 사용될 JobParameters 오브젝트를 리턴
+   - 기존의 JobParameter 변경없이 Job을 여러 번 시작하고자 할때
+   - RunIdIncrementer 구현체를 지원하며 인터페이스를 직접 구현할 수 있음
+
+2. 구조
+    JobParametersIncrementer
+```java
+JobParameters getNext(@Nullable JobParameters parameters);
+```
 
 
 

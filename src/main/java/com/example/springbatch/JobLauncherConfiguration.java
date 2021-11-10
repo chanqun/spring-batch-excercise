@@ -20,6 +20,7 @@ public class JobLauncherConfiguration {
         return jobBuilderFactory.get("batchJob")
                 .start(step1())
                 .next(step2())
+                .incrementer(new CustomJobParametersIncrementer())
                 .build();
     }
 
