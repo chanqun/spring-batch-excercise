@@ -522,6 +522,27 @@ RepeatStatus execute(StepContribution, ChinkContext);
    - allow-start-if-complete가 "true"로 설정된 step은 항상 실행한다.
 
 
+### JobStep
+
+1. 기본 개념
+    - Job에 속하는 Step 중 외부의 Job을 포함하고 있는 Step
+    - 외부의 Job이 실패하면 해당 Step이 실패하므로 결국 최종 기본 job도 실패한다.
+    - 모든 메타데이터는 기본 Job과 외부 Job별로 각각 저장된다.
+    - 커다란 시스템을 작은 모듈로 쪼개고 job의 흐름을 관리하고자 할 떄 사용할 수 있다.
+
+2. Api 소개
+
+StepBuilderFactory > StepBuilder > JobStepBuilder > JobStep
+
+```java
+public Step jobStep(JobLauncher jobLauncher) {
+    return stepBuilderFactory.get("jobStep") // StepBuilder 를 생성하는 팩토리, Step 이름을 매개변수로 받음
+        .job(Job) // JobStep 내에서 실행될 Job 설정 JobStepBuilder 반환
+        .launcher(jobLauncher) // Job을 실행할 JobLauncher 설정
+        .parametersExtractor(JobParametersExtractor) // Step의 ExecutionContext를 Job이 실행되는 데 필요한 JobParameters로 반환
+        .build();
+}
+```
 
 
 
@@ -533,44 +554,17 @@ RepeatStatus execute(StepContribution, ChinkContext);
 
 
 
-### 스프링 배치 기본 구조
 
-- Job은 JobLauncher에 의해 실행
-- Job은 배치의 실행 단위를 의미
-- Job은 N개읜 Step을 실행할 수 있으며, 흐름을 관리할 수 있다.
-    - 예를 들면, A Step 실행 후 조건에 따라 B Step 또는 C Step 실행 설정
 
-- Step의 실행 단위는 크게 2가지로 나눌 수 있다.
-    1. Chunk 기반: 하나의 큰 덩어리를 n개씩 나눠서 실행
-    2. Task 기반: 하나의 작업 기반으로 실행
-- Chunk 기반 Step은 ItemReader, ItemProcessor, ItemWriter가 있다.
-    - 여기서 Item은 배치 처리 대상 객체를 의미
-- ItemReader는 배치 처리 대상 객체를 읽어 ItemProcessor 또는 ItemWriter에게 전달
-    - 예를 들면, 파일 또는 DB에서 데이터를 읽는다.
-- ItemProcessor는 input 객체를 Output 객체로 filtering 또는 processing 해 ItemWriter 에게 전달
-    - 예를 들면, ItemReader에서 읽은 데이터를 수정 또는 ItemWriter 대상인지 filtering
-    - ItemProcessor는 Optional
-    - ItemProcessor가 하는 일을 ItemReader 또는 ItemWriter가 대신 할 수 있다.
-- ItemWriter는 배치 처리 대상 객체를 처리한다.
-    - 예를 들면, DB update를 하거나, 처리 대상 사용자에게 알림을 보낸다.
 
-### 스프링 배치 테이블 구조와 이해
 
-- JobInstance : BATCH_JOB_INSTANCE 와 매핑
-- JobExecution : BACH_JOB_EXECUTION
-- JobParameters : BATCH_JOB_EXECUTION_PARAMS
-- ExecutionContext : BATCH_JOB_EXECUTION_CONTEXT
 
-- JobInstance의 생성 기준은 JobParamters 중복 여부에 따라 생성된다.
-- 다른 parameter로 Job이 실행되면, JobInstance가 생성된다.
-- 같은 parameter로 Job이 실행되면, 이미 생성된 JobInstance가 실행된다.
-- JobExecution은 항상 새롭게 생성된다.
-- 예를 들어
-    - 처음 Job 실행 시 date parameter가 1월1일로 실행 됐다면, 1번 JobInstance가 생성된다.
-    - 다음 Job 실행 시 date parameter가 1월2일로 실행 됐다면, 2번 JobInstance가 생성된다.
-    - 다음 Job 실행 시 date parameter가 1월2일로 실행 됐다면, 2번 JobInstance가 재 실행된다.
-        - 이때 Job이 재실행 대상이 아닌 경우 에러가 발생한다.
-    - Parameter가 없는 Job을 항상 새로운 JobInstance가 실행되도록 RunIdIncrementer가 제공된다.
+
+
+
+
+
+
 
 ### 우아한 스프링 배치 - 유튜브 정리
 
