@@ -22,8 +22,11 @@ public class JobStepConfiguration {
     @Bean
     public Job parentJob() {
         return this.jobBuilderFactory.get("parentJob")
-                .start(jobStep(null))
-                .next(step2())
+                .start(step1())
+                .on("COMPLETED").to(step3())
+                .from(step1())
+                .on("FAILED").to(step2())
+                .end()
                 .build();
     }
 
@@ -68,6 +71,17 @@ public class JobStepConfiguration {
     @Bean
     public Step step2() {
         return stepBuilderFactory.get("step2")
+                .tasklet(new Tasklet() {
+                    @Override
+                    public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
+                        return RepeatStatus.FINISHED;
+                    }
+                }).build();
+    }
+
+    @Bean
+    public Step step3() {
+        return stepBuilderFactory.get("step3")
                 .tasklet(new Tasklet() {
                     @Override
                     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
