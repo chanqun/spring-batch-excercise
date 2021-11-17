@@ -575,7 +575,18 @@ public Job batchJob() {
 }
 ```
 
+### start() / next()
 
+```java
+return jobBuilderFactory.get("batchJob")
+        .start(Flow) // 처음 실행 할 Flow 설정, JobFlowBuilder 가 반환된다. 여기에 Step 이 인자로 오게 되면 SimpleJobBuilder가 반환
+        .next(Step or Flow or JobExecutionDecider)
+        .on(String pattern)
+        .to(Step)
+        .stop() / fail() / end() / stopAndRestart()
+        .end()
+        .build();
+```
 
 
 
