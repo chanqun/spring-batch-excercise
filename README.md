@@ -622,8 +622,40 @@ return jobBuilderFactory.get("batchJob")
   - COMPLETED, STOPPED, FAILED, UNKNOWN
 
 
+### Transition
 
+```java
+public Job batchJob() {
+    return jobBuilderFactory.get("batchJob")
+        .start(Flow)
+        .next(Step of Flow of JobExecutionDecider)
+        .on(String pattern) // TransitionBuilder 반환
+        .to(Step or Flow or JobExecutionDecider)
+        .stop() / fail()/ end()/ stopAndRestart(Step or Flow or JobExecutionDecider)
+        .end()
+        .build();
+}
+```
 
+1. 기본 개념
+   - Transition
+     - Flow 내 Step의 조건부 전환을 정의함
+     - Job의 API 설정에서 on(String pattern) 메소드를 호출하면 TransitionBuilder가 반환되어 Transition Flow를 구성할 수 있음
+     - Step의 종료상태(ExitStatus)가 어떤 pattern과도 매칭되지 않으면 스프링 배치에서 예외를 발생하고 Job은 실패
+     - transition은 구체적인 것부터 그렇지 않은 순서로 적용된다.
+2. API
+    - on(String pattern)
+      - Step의 실행 결과로 돌려받는 종료상태(ExitStatus)와 매칭하는 패턴 스키마, BatchStatus와 매칭하는 것이 아님
+      - pattern과 ExitStatus와 매칭이 되면 다음으로 실행할 Step을 지정할 수 있다.
+      - 특수문자는 두 가지만 허용
+        - "*" : 0개 이상의 문자와 매칭, 모든 것에서는 이미 정의 된 것은 제외
+        - "?" : 정확히 1개의 문자와 매칭
+    - to()
+      - 다음으로 실행할 단계를 지정
+      - from()
+        - 이전 단계에서 정의한 Transition을 새롭게 추가 정의함
+
+![img8](./image/img8.png)
 
 
 
