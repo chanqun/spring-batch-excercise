@@ -658,6 +658,23 @@ public Job batchJob() {
 ![img8](./image/img8.png)
 
 
+### 사용자 정의 ExitStatus
+
+1. 기본 개념
+    - ExitStatus에 존재하지 않는 exitCode를 새롭게 정의해서 설정
+    - StepExecutionListener의 afterStep() 메서드에서 Custom exitCode 생성 후 새로운 ExitStatus 반환
+    - Step 실행 후 완료 시점에서 현재 exitCode를 사용자 정의 exitCode로 수정할 수 있음
+
+
+
+
+
+
+
+
+
+
+
 
 
 
