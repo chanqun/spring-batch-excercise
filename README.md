@@ -677,6 +677,13 @@ public Job batchJob() {
 
 ### FlowJob 아키텍처
 
+### SimpleFlow
+개념 및 API 소개
+
+1. 기본개념
+    - 스프링 배치에서 제공하는 Flow 의 구현체로서 각 요소(Step, Flow, JobExecutionDecider) 들을 담고 있는 state를 실행시키는 도메인 객체
+    - FlowBuilder를 사용해서 생성하며 Transition 과 조합하여 여러 개의 Flow 및 중첩 Flow 를 만들어 Job을 구성할 수 있다.
+
 
 
 
@@ -860,3 +867,4 @@ JpaItemWriter - save or update 필요할 때
 JpaItemPersistWriter - save만 있을 때
 
 The Definitive Guide to Spring Batch
+
