@@ -25,8 +25,10 @@ public class SimpleFlowConfiguration {
     @Bean
     public Job batchJob() {
         return this.jobBuilderFactory.get("batchJob")
-                .start(flow())
-                .next(step3())
+                .start(step1())
+                .on("COMPLETED").to(step2())
+                .from(step1())
+                .on("FAILED").to(step3())
                 .end()
                 .build();
     }

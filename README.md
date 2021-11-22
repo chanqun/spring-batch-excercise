@@ -685,6 +685,11 @@ public Job batchJob() {
     - FlowBuilder를 사용해서 생성하며 Transition 과 조합하여 여러 개의 Flow 및 중첩 Flow 를 만들어 Job을 구성할 수 있다.
 
 
+StateTransition
+State state // 현재 state
+String pattern // on() Transition
+String next // 다음 State
+
 
 
 
