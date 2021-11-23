@@ -691,6 +691,48 @@ String pattern // on() Transition
 String next // 다음 State
 
 
+### FlowStep
+
+1. 기본개념
+    - Step 내에 Flow 를 할당하여 실행시키는 도메인 객체
+    - flowStep 의 BatchStatus 와 ExitStatus는 Flow 의 최종 상태값에 따라 결정된다.
+
+2. API 소개
+
+StepBuilderFactory > StepBuilder > FlowStepBuilder > FlowStep
+
+```java
+public Step flowStep() {
+    return stepBuilderFactory.get("flowStep")
+        .flow(flow())
+        .build();
+}
+```
+
+
+### JobScope, StepScope
+
+1. Scope
+    - 스프링 컨테이너에서 빈이 관리되는 범위
+    - singleton, prototype, request, session, application 있으며 기본은 singleton으로 생성됨
+2. 스프링 배치 스코프
+    - @JobScope, @StepScope
+      - Job과 Step의 빈 생성과 실행에 관여하는 스코프
+      - 프록시 모드를 기본값으로 하는 스코프
+      - 해당 스코프가 선언되면 빈이 생성이 어플리케이션 구동시점이 아닌 빈의 실행시점에 이루어진다.
+        - @Values를 주입해서 빈의 실행 시점에 값을 참조할 수 있으며 일종의 Lazy Binding이 가능해 진다.
+        - @Value("#{jobParameters[parameter]}"), @Value("#{jobExecutionContext[parameter]}"), @Value("#{stepExecutionContext[parameter]}")
+        - @Values를 사용할 경우 빈 선언문에 @JobScope, @StepScope를 정의하지 않으면 오류를 발생하므로 반드시 선언해야함
+      - 프록시 모드로 빈이 선언되기 때문에 어플리케이션 구동시점에는 빈의 프록시 객체가 생성되어 실행 시점에 실제 빈을 호출해 준다.
+      - 병렬처리 시 각 스레드 마다 생성된 스코프 빈이 할당되기 때문에 스레드에 안전하게 실행이 가능하다
+
+3. @JobScope
+   - Step 선언문에 정의한다.
+   - @Value: jobParamter, jobExecutionContext만 사용가능
+
+4. @StepScope
+    - Tasklet이나 ItemReader, ItemWriter, ItemProcessor 선언문에 정의한다.
+    - @Value: jobParameter, jobExecutionContext, stepExecutionContext 사용가능
 
 
 
