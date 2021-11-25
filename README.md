@@ -771,7 +771,15 @@ public Step flowStep() {
     - Chunk<O> 는 ItemReader로부터 전달받은 Chunk<I>를 참조해서 ItemProcessor에서 적절하게 가공, 필터링한 다음 ItemWriter에 전달하는 타입
 
 
+```java
+Chunk
 
+List items
+List<SkipWrapper> skips
+List<Exception> errors
+ChunkIterator iterator(return new ChunkIterator(items))
+
+```
 
 
 
