@@ -812,6 +812,30 @@ public Step chunkStep() {
 ```
 
 
+#### ChunkProvider
+1. 기본개념
+    - ItemReader를 사용해서 소스로부터 아이템을 Chunk size 만큼 읽어서 Chunk단위로 만들어 제공하는 도메인 객체
+    - Chunk<I> 를 만들고 내부적으로 반복문을 사용해서 ItemReader.read() 를 계속 호출하면서 item을 Chunk에 쌓는다.
+    - 외부로부터 ChunkProvider가 호출될 때마다 항상 새로운 Chunk가 생성된다.
+    - 반복문 종료 시점
+      - Chunk Size만큼 item을 읽으면 반복문 종료되고 ChunkProcessor로 넘어감
+      - ItemReader가 읽은 item이 null일 경우 반복문 종료 및 해당 Step 반복문까지 종료
+    - 기본 구현체로서 SimpleChunkProvider와 FaultTolerantChunkProvider가 있다.
+
+
+#### ChunkProcessor
+1. 기본개념
+    - ItemProcessor를 사용해서 Item을 변형, 가공, 필터링하고 ItemWriter를 사용해서 Chunk데이터를 저장 출력한다.
+    - Chunk<O>를 만들고 앞에서 넘어온 Chunk<I>의 item을 한 건씩 처리한 후 Chunk<O>에 저장한다.
+    - 외부로 부터 ChunkProcessor가 호출될 때마다 항상 새로운 Chunk가 생성된다.
+    - ItemProcessor는 설정시 선택사항으로서 만약 객체가 존재하지 않을 경우 ItemReader에서 읽은 item그대로가 Chunk<O>에 저장된다.
+    - ItemProcessor처리가 완료되면 Chunk<O>에 있는 List<Item>을 ItemWriter에게 전달한다.
+    - ItemWriter는 chunk size만큼 데이터를 commit처리 하기 때문에 chunk size는 공 commit interval 이 된다.
+    - 기본 구현체로서 SimpleChunkProcessor와 FaultTolerantChunkProcessor가 있다.
+
+
+
+
 
 
 
