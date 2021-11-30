@@ -834,6 +834,55 @@ public Step chunkStep() {
     - 기본 구현체로서 SimpleChunkProcessor와 FaultTolerantChunkProcessor가 있다.
 
 
+### ItemReader
+- 기본 개념
+  - 다양한 입력으로부터 데이터를 읽어서 제공하는 인터페이스
+    - 플랫 파일 - csv, txt 고정 위치로 정의된 데이터 필드나 특수문자로 구별된 데이터의 행
+    - XML, json
+    - Database
+    - JMS, RabbitMQ와 같은 Message Queuing 서비스
+    - Custom Reader - 구현 시 멀티 스레트 환경에서 스레드에 안전하게 구현할 필요가 있음
+  - ChunkOrientedTasklet 실행 시 필수적 요소로 설정해야 
+
+- T read()
+    - 입력 데이터를 읽고 다음 데이터로 이도한다.
+    - 아이템 하나를 리턴하며 더 이상 아이템이 없는 경우 null 리턴
+    - 아이템 하나는 파일의 한줄, DB의 한 row 혹은 XML 파일에서 하나의 엘리먼트가 될 수 있다.
+    - 더 이상 처리해야 할 item이 없어도 예외가 발생하지 않고 ItemProcessor와 같은 다음 단계로 넘어 간다.
+
+File (FlatFileItemReader, StaxEventItemReader, JsonItemReader, MultiResourceItemReader)
+DB (JdbcCursorItemReader, JpaCursorItemReader, JdbcPagingItemReader, JpaPagingItemReader, ItemReaderAdapter)
+Custom (SynchronizedItemStreamReader, CustomItemReader)
+
+
+ItemWriter
+- 기본 개념
+  - Chunk 단위로 데이터를 받아 일괄 출력 작업을 위한 인터페이스
+  - 아이템 하나가 아닌 아이템 리스트를 전달 받는다.
+  - ChunkOrientedTasklet 실행 시 필수적 요소로 설정해야 한다.
+
+- void write(List<? extends T> items)
+  - 출력 데이터를 아이템 리스트로 받아 처리한다.
+  - 출력이 완료되고 트랜잭션이 종료되면 새로운 Chunk 단위 프로세스로 이동한다.
+
+
+ItemProcessor
+- 기본 개념
+  - 데이터를 출력하기 전에 데이터를 가공, 변형, 필터링하는 역할
+  - ItemReader 및 ItemWriter와 분리되어 비즈니스 로직을 구현할 수 있다.
+  - ItemReader로 부터 받은 아이템을 특정 타입으로 변환해서 ItemWriter에 넘겨 줄 수 있다.
+  - ItemReader로 부터 받은 아이템들 중 필터과정을 거쳐 원하는 아이템들만 ItemWriter에게 넘겨줄 수 있따.
+    - ItemProcessor 에서 process() 실행결과 null을 반환하면 Chunk<O> 에 저장되지 않기 때문에 결국 ItemWriter에 전달되지 않는다.
+  - ChunkOrientedTasklet 실행 시 선택적 요소이기 때운에 청크 기반 프로세싱에서 ItemProcessor 단계가 반드시 필요한 것은 아니다.
+
+
+
+
+
+
+
+
+
 
 
 
