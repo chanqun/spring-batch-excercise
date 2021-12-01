@@ -6,21 +6,21 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.item.ItemProcessor;
+import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.support.ListItemReader;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Configuration
-public class ChunkConfiguration {
+public class ItemConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
@@ -30,31 +30,35 @@ public class ChunkConfiguration {
         return this.jobBuilderFactory.get("batchJob")
                 .start(step1())
                 .next(step2())
+                .incrementer(new RunIdIncrementer())
                 .build();
     }
 
     @Bean
     public Step step1() {
         return stepBuilderFactory.get("step1")
-                .<String, String>chunk(5) // input, output generic
-                .reader(new ListItemReader<>(Arrays.asList("itme1", "itme2", "item3", "item4", "item5")))
-                .processor(new ItemProcessor<String, String>() {
-                    @Override
-                    public String process(String item) throws Exception {
-                        Thread.sleep(300);
-                        System.out.println("item = " + item);
-
-                        return "my" + item;
-                    }
-                })
-                .writer(new ItemWriter<String>() {
-                    @Override
-                    public void write(List<? extends String> items) throws Exception {
-                        Thread.sleep(300);
-                        System.out.println("items = " + items);
-                    }
-                })
+                .<Customer, Customer>chunk(3) // input, output generic
+                .reader(itemReader())
+                .processor(itemProcessor())
+                .writer(itemWriter())
                 .build();
+    }
+
+    @Bean
+    public ItemReader<Customer> itemReader() {
+        return new CustomItemReader(
+                Arrays.asList(new Customer("user1"), new Customer("user2"), new Customer("user3"))
+        );
+    }
+
+    @Bean
+    public ItemProcessor<Customer, Customer> itemProcessor() {
+        return new CustomItemProcessor();
+    }
+
+    @Bean
+    public ItemWriter<Customer> itemWriter() {
+        return new CustomItemWriter();
     }
 
     @Bean
@@ -70,5 +74,6 @@ public class ChunkConfiguration {
                 .build();
     }
 }
+
 
 
