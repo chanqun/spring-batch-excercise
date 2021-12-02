@@ -877,6 +877,21 @@ ItemProcessor
 
 
 
+### ItemStream
+- 기본 개념
+  - ItemReader와 ItemWriter 처리 과정 중 상태를 저장하고 오류가 발생하면 해당 상태를 참조하여 실패한 곳에서 재 시작 하도록 지원
+  - 리소스를 열고(open) 닫아야(close) 하며 입출력 장치 초기화 등의 작업을 해야 하는 경우
+  - ExecutionContext 를 매개변수로 받아서 상태 정보를 업데이트(update) 한다.
+  - ItemReader 및 ItemWriter는 ItemStream을 구현해야 한다.
+
+ItemStream
+void open // read, write 메서드 호출전에 파일이나 커넥션이 필요한 리소스에 접근하도록 초기화 작업
+void update // 현재까지 진행된 모든 상태를 저장
+void close // 열려 있는 모든 리소스를 안전하게 처리하고 닫음
+
+reader 전후 open update , writer 전후 open update 끝나고 close 호출
+
+
 
 
 
