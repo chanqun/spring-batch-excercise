@@ -893,8 +893,9 @@ reader 전후 open update , writer 전후 open update 끝나고 close 호출
 
 
 
+### Chunk Process 아키텍처
 
-
+![img10](./image/img10.png)
 
 
 
