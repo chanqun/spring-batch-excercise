@@ -898,9 +898,33 @@ reader 전후 open update , writer 전후 open update 끝나고 close 호출
 ![img10](./image/img10.png)
 
 
+#### FlatFileItemReader
+
+- 기본개념
+  - 2차원 데이터(표)로 표현된 유형의 파일을 처리하는 ItemReader
+  - 일반적으로 고정 위치로 정의된 데이터 필드나 특수 문자에 의해 구별된 데이터의 행을 읽는다.
+  - Resource와 LineMapper 두 가지 요소가 필요하다.  (6글자 / 6글자 / 4글자)
 
 
+- Resource
+  - FileSystemResource - new FileSystemResource("resource/path/config.xml")
+  - ClassPathResource - new ClassPathResource("resource/path/config.xml")
 
+- LineMapper
+  - 파일의 라인 한줄을 Object로 변환해서 FlatBileItemReader로 리턴
+  - 단순히 문자열을 받기 때문에 문자열을 토큰화해서 객체로 매핑하는 과정이 필요
+  - LineTokenizer 와 FieldSetMapper를 사용해서 처리한다
+  - FieldSet
+    - 라인을 필드로 구분해서 만든 배열 토큰을 전달하면 토큰 필드를 참조 할 수 있도록 한다.
+    - JDBC의 ResultSet과 유사
+  - LineTokenizer
+    - 입력받은 라인을 FieldSet으로 변환해서 리턴한다.
+    - 파일마다 형식이 다르기 때문에 문자열을 FieldSet으로 변환하는 작업을 추상화해야한다.
+  - FieldSetMapper
+    - FieldSet객체를 받아서 원하는 객체로 매핑해서 리턴한다.
+    - jdbcTemplate의 RowMapper와 동일한 패턴을 사용한다.
+
+![img10](./image/img11.png)
 
 
 
