@@ -928,7 +928,7 @@ reader 전후 open update , writer 전후 open update 끝나고 close 호출
 
 
 
-#### delimetedlinetokenizer
+#### DelimitedLineTokenizer
 
 - 기본개념
   - 한 개 라인의 String을 구분자 기준으로 나누어 토큰화 하는 방식
@@ -948,6 +948,13 @@ targetType(Customer.class) 해도 잘 작용
     - 1-4 또는 
 
 
+#### tokenizer Exception Handling
+
+- 기본 개념
+  - 라인을 읽거나 토큰화 할 때 발생하는 Parsing 예외를 처리할 수 있도록 예외 계층 제공
+  - 토큰화 검증을 엄격하게 적용하지 않도록 설정하면 Parsing 예외가 발생하지 않도록 할 수 있다.
+
+IncorrectTokenCountException e, IncorrectLineLengthException ex
 
 
 
