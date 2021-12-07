@@ -924,7 +924,30 @@ reader 전후 open update , writer 전후 open update 끝나고 close 호출
     - FieldSet객체를 받아서 원하는 객체로 매핑해서 리턴한다.
     - jdbcTemplate의 RowMapper와 동일한 패턴을 사용한다.
 
-![img10](./image/img11.png)
+![img11](./image/img11.png)
+
+
+
+#### delimetedlinetokenizer
+
+- 기본개념
+  - 한 개 라인의 String을 구분자 기준으로 나누어 토큰화 하는 방식
+
+![img12](./image/img12.png)
+
+fieldSetMapper(BeanWrapperFiledSetMapper<>())
+사용하고
+targetType(Customer.class) 해도 잘 작용
+
+
+#### FixedLengthTokenizer
+
+- 기본 개념
+  - 한 개 라인의 String을 사용자가 설정한 고정길이 기준으로 나누어 토큰화 하는 방식
+  - 범위는 문자열 형식으로 설정 할 수 있다.
+    - 1-4 또는 
+
+
 
 
 
