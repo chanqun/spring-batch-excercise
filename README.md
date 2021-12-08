@@ -957,6 +957,40 @@ targetType(Customer.class) 해도 잘 작용
 IncorrectTokenCountException e, IncorrectLineLengthException ex
 
 
+#### StaxEventItemReader - 개념 및 API 소개
+
+- JAVA XML API
+  - DOM 방식
+    - 문서 전체를 메모리에 로드한 후 Tree 형태로 만들어서 데이터를 처리하는 방식, pull 방식
+    - 엘리멘트 제어는 유연하나 문서크기가 클 경우 메모리 사용이 많고 속도가 느림
+  - SAX 방식
+    - 문서의 항복을 읽을 때 마다 이벤트가 발생하여 데이터를 처리하는 push 방식
+    - 메모리 비용이 적고 속도가 빠른 장점은 있으나 엘리멘트 제어가 어려움
+  - StAX 방식 (Streaming API for XML)
+    - DOM과 SAX의 장점과 단점을 보완한 API 모델로서 push 와 pull을 동시에 제공함
+    - XML 문서를 읽고 쓸 수 있는 양방향 파서기 지원
+    - XML 파일의 항목에서 항목으로 직접 이동하면서 Stax파서기를 통해 구문 분석
+    - 유형
+      - Iterator API 방식
+        - XMLEventReader의 nextEvent()를 호출해서 이벤트 객체를 가지고 옴
+        - 이벤트 객체는 XML 태그 유형에 대한 정보를 제공함
+      - Cursor API 방식
+        - JDBC Resultset처럼 작동하는 API로서 XMLStreamReader는 XML 문서의 다음 요소로 커서를 이동한다.
+        - 커서에서 직접 메서드를 호출하여 현재 이벤트에 대한 자세한 정보를 얻는다.
+
+- Spring-OXM
+  - 스프링의 Object XML Mapping 기술로 XML 바인딩 기술을 추상화함
+    - Marshaller
+      - marshall - 객체를 XML로 직렬화하는 행위
+    - Unmarshaller
+      - unmarshall - XML을 객체로 역직렬화하는 행위
+    - Marshaller와 Unmarshaller 바인딩 기능을 제공하는 오픈소스
+- Spring Batch XML
+  - 스프링 배치에서는 StAX 방식으로 XML 문서를 처리하는 StaxEventItemReader를 제공
+  - XML 을 읽어 자바 객체로 매핑 자바 객체를 XML로 쓸 수 있는 트랜잭션 구조 지원
+
+
+
 
 
 
