@@ -1064,6 +1064,41 @@ public JpaCursorItemReader itemReader() {
 }
 ```
 
+### JdbcPagingItemReader
+
+- 기본개념
+  - Paging기반의 JDBC 구현체로서 쿼리에 시작 행 번호와 페이지에서 반환 할 수 행 수를 지정해야 SQL을 실행한다.
+  - 스프링 배치에서 offset과 limit을 PageSize에 맞게 자동으로 생성해 주며 페이징 단위로 데이터를 조회할 때 마다 새로운 쿼리가 실행한다.
+  - 페이지마다 새로운 쿼리를 실행하기 때문에 페이징 시 결과 데이터의 순서가 보장될 수 있도록 order by 구문이 작성되도록 한다.
+  - 멀티 스레드 환경에서 Thread안정성을 보장하기 때문에 별도의 동기화를 할 필요가 없다.
+
+- PagingQueryProvider
+  - 쿼리 실행에 필요한 쿼리문을 ItemReader에게 제공하는 클래스
+  - 데이터베이스마다 페이징 전략이 다르기 때문에 각 데이터 베이스 유형마다 다른 PagingQueryProvider를 사용한다.
+  - select 절, from 절, sortKey는 필수로 설정해야 하며 where, group by 절은 필수가 아니다.
+
+```java
+public JdbcPagingItemReader itemReader() {
+        .name("pagingItemReader")
+        .pageSize(int pageSize)
+        .dataSource(DataSource)
+        .queryProvider(PagingQueryProvider) // queryProvider new SqlPagingQueryProviderFactoryBean();
+        .rowMapper(Class<T>)
+        .selectClause(String selectClause)
+        .whereClause(String whereClause)
+        .groupClause(String groupClause)
+        .sortKeys(Map<String, Object> parameters)
+        .maxItemCount(int count)
+        .currentItemCount(int count)
+        .maxRows(int maxRows)
+        .build();
+}
+
+```
+
+
+
+
 
 
 
