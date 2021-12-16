@@ -1104,7 +1104,7 @@ public ItemReader<? xtends Customer> customerItemReader() {
         .name("jpaPagingItemReader")
         .entityManagerFactory(entityManagerFactory)
         .pageSize(10)
-        .queryString("select c from Customer c")
+        .queryString("select c from Customer c join fetch c.address")
         .build();
     )
 }
