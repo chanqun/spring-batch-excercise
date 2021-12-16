@@ -1097,6 +1097,18 @@ public JdbcPagingItemReader itemReader() {
 ```
 
 
+```java
+@Bean
+public ItemReader<? xtends Customer> customerItemReader() {
+     return new JpaPagingItemReaderBuilder<Customer>(
+        .name("jpaPagingItemReader")
+        .entityManagerFactory(entityManagerFactory)
+        .pageSize(10)
+        .queryString("select c from Customer c")
+        .build();
+    )
+}
+```
 
 
 
