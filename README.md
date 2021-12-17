@@ -1111,7 +1111,41 @@ public ItemReader<? xtends Customer> customerItemReader() {
 ```
 
 
+### ItemReaderAdapter
 
+- 기본개념
+  - 배치 Job 안에서 이미 있는 DAO나 다른 서비스를 ITemReader 안에서 사용하고자 할 때 위임 역할을 한다
+
+
+
+### ItemWriter
+
+- Flat Files - FlatFileItemWriter
+- XML - StaxEventItemWriter
+- Json - JsonFileItemWriter
+- DB - JDBC ItemWriter, JPA ItemWriter
+
+#### FlatFileItemWriter
+- 기본개념
+  - 2차원 데이터로 표현된 유형의 파일을 처리하는 ItemWriter
+  - 고정 위치로 정의된 데이터 필드나 특수 문자에 의해 구별된 데이터의 행을 기록한다.
+  - Resource와 LineAggregator 두 가지 요소가 필요하다
+
+- 구조
+
+```java
+String encoding = DEFAULT_CHARSET // 문자열 인코딩, 디폴트는 Charset.defaultCharset()
+
+boolean append = false // 대상 파일이 이미있는 경우 데이터를 계속 추가할 것인지 여부
+
+Resource resource // 작성해야 할 리소스
+
+LineAggregator<T> lineAggregator // Object를 String로 변환한다.
+
+FlatFileHeaderCallback headerCallback // 헤더를 파일에 쓰기위한 콜팩 인터페이스
+
+FlatFileFooterCallback footerCallback // 푸터를 파일에 쓰기위한 콜백 인터페이스
+```
 
 
 
