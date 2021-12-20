@@ -1162,7 +1162,50 @@ FlatFileFooterCallback footerCallback // 푸터를 파일에 쓰기위한 콜백
 - 객체의 필드 사이에 구분자를 삽입해서 한 문자열로 변환한다.
 
 
+### StaxEventItemWriter
 
+- 기본개념
+  - XML 쓰는 과정은 읽기 과정에 대칭적
+  - StaxEventItemWriter는 Resource, marshaller, rootTagName가 필요하다.
+
+```java
+public StaxEventItemReader itemReader() {
+    return new StaxEventItemWriterBuilder<T>()
+        .name(String name)
+        .resource(Rssource)
+        .rootTagName()
+        .overwriteOutput(boolean)
+        .headerCallback()
+        .footerCallback()
+        .build();
+}
+```
+
+### JsonFileItemWriter
+- 기본개념
+  - 객체를 받아 JSON String으로 변환하는 역할을 한다
+
+
+### JdbcBatchItemWriter
+
+- 기본 개념
+  - JdbcCursorItemReader 설정과 마찬가지로 datasource를 지정하고, sql 속성에 실행할 쿼리를 설정
+  - JDBC의 Batch 기능을 사용하여 bulk insert/update/delete 방식으로 처리
+  - 단건 처리가 아닌 일괄처리이기 때문에 성능에 이점을 가진다.
+
+- API
+```java
+public JdbcBatchItemWriter itemWriter() {
+    return new JdbcBatchItemWriterBuilder<T>()
+        .name(String name)
+        .datasource(Datasource)
+        .sql(String sql)
+        .assertUpdates(boolean)
+        .beanMapped()
+        .columnMapped()
+        .build();
+}
+```
 
 
 
