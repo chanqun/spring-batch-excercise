@@ -1148,6 +1148,21 @@ FlatFileFooterCallback footerCallback // 푸터를 파일에 쓰기위한 콜백
 ```
 
 
+- LineAggregator
+  - Item을 받아서 String으로 변환하여 리턴한다.
+  - FieldExtractor를 사용해서 처리할 수 있다.
+  - 구현체
+    - PassThroughLineAggregator, DelimitedLineAggregator, FormatterLineAggregator
+
+- FieldExtractor
+  - 전달 받은 Item 객체의 필드를 배열로 만들고 배열을 합쳐서 문자열을 만들어 구현하도록 제공하는 인터페이스
+
+
+### DelimitedLineAggregator
+- 객체의 필드 사이에 구분자를 삽입해서 한 문자열로 변환한다.
+
+
+
 
 
 
