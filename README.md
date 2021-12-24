@@ -1263,6 +1263,42 @@ public ItemProcessor itemProcessor() {
 }
 ```
 
+### 스프링 배치 반복 및 오류 제어
+
+1. Repeat
+2. FaultTolerant 내결합성
+3. Skip
+4. Retry
+5. Skip & Retry 아키텍처
+
+
+#### Repeat
+- 기본개념
+  - Spring Batch는 얼마나 작업을 반복해야 하는지 알려 줄 수 있는 기능을 제공한다.
+  - 특정 조건이 충족 될 때까지 Job 또는 Step을 반복하도록 배치 애플리케이션을 구성 할 수 있다.
+  - 스프링 배치에서는 Step의 반복과 Chunk 반복을 RepeatOperation을 사용해서 처리하고 있다.
+  - 기본 구현체로 RepeatTemplate를 제공한다.
+
+- 반복을 종료할 것인지 여부를 결정하는 세가지 항목
+  - RepeatStatus
+    - 스프링 배치의 처리가 끝났는지 판별하기 위한 열거형
+      - CONTINUABLE
+      - FINISHED
+  - CompletionPolicy
+    - RepeatTemplate의 iterate 메소드 안에서 반복을 중단할지 결정
+    - 실행 횟수 도는 완료시기, 오류 발생시 수행 할 작업에 대한 반복여부 결정
+    - 정상 종료를 알리는데 사용
+  - ExceptionHandler
+    - RepeatCallback 안에서 예외가 발생하면 RepeatTemplate 가 ExceptionHandler 를 참조해서 예외를 다시 던질지 여부 결정
+    - 예외를 받아서 다시 던지게 되면 반복 종료
+    - 비정상 종료를 알리는데 사용된다.
+
+
+
+
+
+
+
 
 
 
