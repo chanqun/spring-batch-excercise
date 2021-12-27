@@ -1294,6 +1294,46 @@ public ItemProcessor itemProcessor() {
     - 비정상 종료를 알리는데 사용된다.
 
 
+### FaultTolerant
+
+- 기본 개념
+  - 스프링 배치는 Job실행 중에 오류가 발생할 경우 장애를 처리하기 위한 기능을 제공하여 이를 통해 복원력을 향상시킬 수 있다.
+  - 오류가 발생해도 Step이 즉시 종료되지 않고 Retry 혹은 Skip 기능을 활성화 함으로써 내결함성 서비스가 가능하도록 한다.
+  - 프로그램의 내결함성을 위한 Skip과 Retry 기능을 제공한다.
+  
+    - Skip
+      - ItemReader / ItemProcessor / ItemWriter 에 적용 할 수 있다.
+    - Retry
+      - ItemProcessor / ItemWriter에 적용할 수 있다.
+  - FaultTolerant 구조는 청크 기반의 프로세스 기반위에 Skip과 Retry 기능이 추가되어 재정의 되어 있다.
+
+```java
+public Step batchStep() {
+    return new stepBuilderFactory.get("batchStep")
+        .<I, O>chunk(10)
+        .reader(ItemReader)
+        .writer(ItemWriter)
+        .faultTolerant()
+        .skip(Class<? extends Throwable> type)
+        .skipLimit(int skipLimit)
+        .skipPolicy(SkipPolicy skipPolicy)
+        .boSkip()
+        .retry()
+        .retryLimit()
+        .retryPolicy()
+        .backOffPolicy()
+        .noRetry()
+        .noRollback()
+        .build();
+}
+```
+
+
+#### Skip
+
+- Skip은 데이터를 처리하는 동안 설정된 Exception이 발생했을 경우, 해당 데이터 처리를 건너뛰는 기능이다.
+- 데이터의 사소한 오류에 대해 Step의 실패처리 대신 Skip을 함으로써, 배치수행의 빈번한 실패를 줄일 수 있게 한다.
+
 
 
 
