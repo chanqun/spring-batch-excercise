@@ -26,8 +26,11 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging:1.7.10")
     compileOnly("org.projectlombok:lombok:1.18.22")
     annotationProcessor("org.projectlombok:lombok")
+
     runtimeOnly("mysql:mysql-connector-java")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("com.ninja-squad:springmockk:3.0.1")
     testImplementation("org.springframework.batch:spring-batch-test")
 }
 
